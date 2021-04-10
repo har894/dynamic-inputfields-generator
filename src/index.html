@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create order</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10 p-5">
+            <h2 class="text-center">Create new order</h2>
+            <form th:action="@{/test/create}" th:object="${ordersRegistrationDTO}" method="post">
+
+                <div class="form-group">
+                    <p class="field-title">ID</p>
+                    <input type="text" th:field="*{id}" fieldName="id" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <p class="field-title">Type</p>
+                    <input type="text" th:field="*{type}" fieldName="type" class="form-control">
+                </div>
+
+                <div class="form-check mb-3">
+                    <label>
+                        <input class="form-check-input" type="checkbox" value="" th:field="*{cashback}" fieldName="cashback">
+                        <p class="form-check-label field-title">Cashback</p>
+                    </label>
+                </div>
+
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="provider-tab" data-toggle="tab" href="#provider" role="tab" aria-controls="provider" aria-selected="false">Contact Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="orderitem-tab" data-toggle="tab" href="#itemsContainer" role="tab" aria-controls="itemsContainer" aria-selected="false">Items</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+
+                    <div class="tab-pane fade show active" id="provider" role="tabpanel" aria-labelledby="provider-tab">
+                        <div class="container border border-info object-content">
+                            <div class="form-group pt-4">
+                                <p class="field-title">Address 1</p>
+                                <input type="text" th:field="*{source.contactData.address1}" fieldName="address1" class="form-control">
+
+                                <p class="field-title">Address 2</p>
+                                <input type="text" th:field="*{source.contactData.address2}" fieldName="address2" class="form-control">
+
+                                <p class="field-title">City</p>
+                                <input type="text" th:field="*{source.contactData.city}" fieldName="city" class="form-control">
+
+                                <p class="field-title">State</p>
+                                <input type="text" th:field="*{source.contactData.state}" fieldName="state" class="form-control">
+
+                                <p class="field-title">ZipCode</p>
+                                <input type="text" th:field="*{source.contactData.zipCode}" fieldName="zipCode" class="form-control">
+
+                                <p class="field-title">Phone 1</p>
+                                <input type="text" th:field="*{source.contactData.phone1}" fieldName="phone1" class="form-control">
+
+                                <p class="field-title">Phone 2</p>
+                                <input type="text" th:field="*{source.contactData.phone2}" fieldName="phone2" class="form-control">
+
+                                <p class="field-title">Email</p>
+                                <input type="text" th:field="*{source.contactData.email}" fieldName="email" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="itemsContainer" role="tabpanel" aria-labelledby="orderitem-tab">
+
+                        <a class="btn btn-success btn-sm m-3 sticky-top text-light" onclick="createNewItem()"> Add New Item </a>
+
+                    </div>
+                </div>
+
+                <hr/>
+                <input type="submit" value="Submit Order" onclick="sentMessage()" class="btn btn-success">
+                <input type="reset" class="btn btn-outline-secondary">
+            </form>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+<!--Item example-->
+<div id="item-example" class="d-none my-2">
+    <div class="card card-body">
+        <div class="container border border-info object-content">
+            <span class="py-2 item-name font-weight-bold float-left">Item name</span>
+
+            <a class="btn btn-outline-danger btn-sm m-1 remove-item-button text-danger float-right rm-item-button" onclick="removeItem(this.id)"> X </a>
+            <br>
+            <br>
+            <div class="form-group">
+                <p class="field-title">ID</p>
+                <input type="text" fieldName="id" class="form-control">
+
+                <p class="field-title">Name</p>
+                <input type="text" fieldName="name" class="form-control">
+
+                <p class="field-title">Notes</p>
+                <input type="text" fieldName="notes" class="form-control">
+
+                <p class="field-title">Category</p>
+                <input type="text" fieldName="category" class="form-control">
+
+                <p class="field-title">Options Total</p>
+                <input type="text" fieldName="optionsTotal" class="form-control">
+
+                <p class="field-title">Instructions</p>
+                <input type="text" fieldName="instructions" class="form-control">
+
+                <p class="field-title">Tax Code</p>
+                <input type="text" fieldName="taxCode" class="form-control">
+
+                <p class="field-title">Quantity</p>
+                <input type="text" fieldName="quantity" class="form-control">
+
+                <p class="field-title">Price</p>
+                <input type="text" fieldName="price" class="form-control">
+
+                <p class="field-title">Tax Amount</p>
+                <input type="text" fieldName="taxAmount" class="form-control">
+
+                <p class="field-title">Total Price</p>
+                <input type="text" fieldName="totalPrice" class="form-control">
+
+                <p class="field-title">Total</p>
+                <input type="text" fieldName="total" class="form-control">
+            </div>
+
+            <a class="btn btn-outline-success btn-sm m-3 add-option-group" onclick="addOptionGroup(this.id)"> New option group </a>
+
+        </div>
+    </div>
+</div>
+
+<!--Item option group example -->
+<div id="option-group-example" class="d-none my-4 border border-secondary p-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <input type="text" fieldname="groupName" class="form-control options-group-name">
+            </div>
+            <div class="col-3">
+                <a class="btn btn-outline-success btn-sm m-1 add-option" onclick="addOption(this.id)"> New option </a>
+            </div>
+            <div class="col-1">
+                <a class="btn btn-outline-danger btn-sm m-1 text-danger float-right rm-option-group" onclick="removeOptionGroup(this.id)"> X </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Item option example -->
+<div id="option-example" class="d-none">
+    <div class="form-group border border-info p-2 my-2">
+        <b class="options-name">Options name</b>
+        <a class="btn btn-outline-danger btn-sm m-1 text-danger float-right rm-option" onclick="removeOption(this.id)"> X </a>
+
+        <p class="field-title">Option Id</p>
+        <input type="text" fieldname="optionId" class="form-control">
+
+        <p class="field-title">Name</p>
+        <input type="text" fieldname="optionName" class="form-control">
+
+        <p class="field-title">Price</p>
+        <input type="text" fieldname="optionPrice" class="form-control">
+    </div>
+</div>
+
+</body>
+</html>
